@@ -6,6 +6,9 @@ import java.util.Arrays;
  * http://judge.noi.cn/problem?id=1000
  * advanced version
  *
+ * Time complexity:
+ *   T(m,n) = O(max{m,n})
+ *
  * @author mingjun
  *
  */
