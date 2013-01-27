@@ -40,7 +40,7 @@ public class CalPi {
 	}
 
 	int [] pi, iterator, temp;
-	final static int mode = 10; //TODO improve performance
+	final static int mode = 10;
 	public CalPi(double r) {
 		this(piLength(r) + 1);
 	}
@@ -69,10 +69,10 @@ public class CalPi {
 	public int [] smallDiv(int x, int y, int [] temp) {
 		int a = x;
 		for(int i=0;i<temp.length; i++){
-			int quotient = a /y;
+			int quotient = a / y;
 			int remain = a % y;
 			temp[i] = quotient;
-			a = remain * 10;
+			a = remain * mode;
 		}
 		return this.temp;
 	}

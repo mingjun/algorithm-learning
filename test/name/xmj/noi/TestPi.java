@@ -13,6 +13,7 @@ public class TestPi {
 	public void testSmallDiv() {
 		CalPi c = new CalPi(1.0);
 		c.smallDiv(5, 3, c.temp);
+		System.out.println("5/3 = " + c.format(c.temp));
 	}
 	
 	@Test
@@ -50,7 +51,7 @@ public class TestPi {
 	
 	@Test
 	public void testPi() {
-		CalPi c = new CalPi(400);
+		CalPi c = new CalPi(10);
 		c.run();
 	}
 
