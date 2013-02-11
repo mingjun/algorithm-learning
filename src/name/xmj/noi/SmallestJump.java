@@ -6,6 +6,9 @@ package name.xmj.noi;
  * Jump path:
  * 0 .. stones[i] .. L
  * where : L >= riverWidth
+ * 
+ *TODO can be improved by build a Jumpable Graph, and run BFS (breadth first Search)
+ *Time complexity: O(V+E) -> O(n)
  */
 public class SmallestJump {
 	int minJumpDistance, maxJumpDistance;
@@ -60,7 +63,7 @@ public class SmallestJump {
 		System.out.println("next jumpable stone "+ lowIndex + "~" + upIndex);
 		for(int j = lowIndex; j <= upIndex ; j++) {
 			//try next jump
-			//TODO dynamic programming
+			//TODO can be improve by dynamic programming -> O(n^2)?
 			jumpFrom(j, count);
 		}
 	}
