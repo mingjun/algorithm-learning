@@ -10,14 +10,19 @@ import java.util.Random;
 import org.junit.Test;
 
 public class TestMergeSort {
-	MergeSort target = new MergeSort();
+
 	@Test
 	public void testMain(){
+		MergeSort target = new MergeSort();
 		checkCorrectOrder(target.sort(Arrays.asList(1,2,5,3,6,4)));
-		
-		checkCorrectOrder(target.sort(rList(100)));//performance problem...
+
+		target = new MergeSort();
+		checkCorrectOrder(target.sort(rList(100000)));//performance problem...
+		target.tracker1.statistic();
+		target.tracker2.statistic();
+		target.tracker3.statistic();
 	}
-	
+
 	public List<Integer> rList(int size) {
 		Random r = new Random();
 		List<Integer> res = new ArrayList<Integer>(size);
@@ -26,7 +31,7 @@ public class TestMergeSort {
 		}
 		return res;
 	}
-	
+
 	public void checkCorrectOrder(List<Integer> list){
 		int pre = Integer.MIN_VALUE;
 		for(Integer num: list) {
