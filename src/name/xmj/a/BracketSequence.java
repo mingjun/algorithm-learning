@@ -20,7 +20,12 @@ public class BracketSequence {
 	static String [] 
 			templates_i = {"{%s}", "%s{}", "{}%s"},
 			templates_j = {"[%s]", "%s[]", "[]%s"},
-			templates_k = {"(%s)", "%s()", "()%s"};
+			templates_k = {"(%s)", "%s()", "()%s"}; //FIXME TEMPLATE IS NOT COMPLETED!!!
+	/*
+	 * E ::= () | [] | {}
+	 * E ::= (E) | [E] | {E}
+	 * E ::= E E                      <- HERE is not completed
+	 */
 	
 	public BracketSequence(int n1, int n2, int n3) {
 		a = n1;
