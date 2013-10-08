@@ -1,8 +1,7 @@
 package name.xmj.a;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * there are 3 types of brackets {} [] and ()
@@ -12,70 +11,84 @@ import java.util.Set;
  *
  */
 public class BracketSequence {
-
-	// Set of strings
-	Set<String> [][][] memo;
-	int a, b, c;
-	
-	static String [] 
-			templates_i = {"{%s}", "%s{}", "{}%s"},
-			templates_j = {"[%s]", "%s[]", "[]%s"},
-			templates_k = {"(%s)", "%s()", "()%s"}; //FIXME TEMPLATE IS NOT COMPLETED!!!
-	/*
+	/**
+	 * method 1: lexcial rules (no some fast)
 	 * E ::= () | [] | {}
 	 * E ::= (E) | [E] | {E}
-	 * E ::= E E                      <- HERE is not completed
+	 * E ::= E E
 	 */
+	//DELETED
 	
-	public BracketSequence(int n1, int n2, int n3) {
-		a = n1;
-		b = n2;
-		c = n3;
-		buildMemo();
-		System.out.println("buildout!");
-		Set<String> set;
-		memo[0][0][0] = set = Collections.emptySet();
-		memo[1][0][0] = set = Collections.singleton("{}");
-		memo[0][1][0] = set = Collections.singleton("[]");
-		memo[0][0][1] = set = Collections.singleton("()");
+	/**
+	 * method 2: simulate write the valid seq
+	 * 
+	 */
+	List<String> out;
+	List<String> getSequences(int x, int y, int z) {
+		out = new ArrayList<String>();
+		buildR(x, 0, y, 0, z, 0, "");
+		return out;
+	}
+	void buildR(int c1, int d1, int c2, int d2, int c3, int d3, String seq) {
+		if(c1 + d1 + c2 + d2 + c3 + d3 == 0) {
+			out.add(seq);
+		}
 		
-		for(int i=0;i<a;i++) {
-			for(int j=0;j < b; j++) {
-				for(int k=0; k< c; k++) {
-//					System.out.println(i);
-					if(memo[i][j][k] == null) {
-						memo[i][j][k] = set = new HashSet<String>();
-						if(i>0) mergeSet(set, memo[i-1][j][k], templates_i);
-						if(j>0) mergeSet(set, memo[i][j-1][k], templates_j);
-						if(k>0) mergeSet(set, memo[i][j][k-1], templates_k);
-					}
-				}
-			}
+		if(c1 > 0) {
+			buildR(c1-1, d1+1, c2, d2, c3, d3, seq+"{");
+		}
+		if(c2 > 0) {
+			buildR(c1, d1, c2-1, d2+1, c3, d3, seq+"[");
+		}
+		if(c3 > 0) {
+			buildR(c1, d1, c2, d2, c3-1, d3+1, seq+"(");
+		}
+		
+		
+		char left = getLeft(seq);
+		if(d1 > 0 && left == '{') {
+			buildR(c1, d1-1, c2, d2, c3, d3, seq+"}");
+		}
+		if(d2 > 0 && left == '[') {
+			buildR(c1, d1, c2, d2-1, c3, d3, seq+"]");
+		}
+		if(d3 > 0 && left == '(') {
+			buildR(c1, d1, c2, d2, c3, d3-1, seq+")");
 		}
 	}
-	
-	Set<String> mergeSet(Set<String> target, Set<String> subSet, String[] templates) {
-//		System.out.println("size: " + subSet.size());
-		for(String sub : subSet) {
-			for(String f: templates) {
-				target.add(String.format(f, sub));
+	char getLeft(String seq) {
+		int r1 = 0;
+		int r2 = 0;
+		int r3 = 0;
+		for(int i=seq.length()-1; i>=0; i--) {
+			char c = seq.charAt(i);
+			switch(c) {
+			case '}':
+				r1 ++;
+				break;
+			case ']':
+				r2 ++;
+				break;
+			case ')':
+				r3 ++;
+				break;
+			case '{':
+				r1 --;
+				break;
+			case '[':
+				r2 --;
+				break;
+			case '(':
+				r3 --;
+			}
+			if(r1 < 0) {
+				return '{';
+			} else if(r2 < 0) {
+				return '[';
+			} else if (r3 < 0) {
+				return '(';
 			}
 		}
-		return target;
-	}
-	
-	@SuppressWarnings("unchecked")
-	void buildMemo() {
-		memo = (Set<String> [][][])new Set[a][][];
-		for(int i=0;i<a;i++) {
-			Set<String> [][] memo_i = memo[i] = (Set<String> [][])new Set [b][];
-			for(int j=0;j < b; j++) {
-				memo_i[j] =(Set<String> []) new Set[c];
-
-			}
-		}
-	}
-	Set<String> getSequences(int x, int y, int z) {
-		return memo[x][y][z];
+		return ' ';
 	}
 }
