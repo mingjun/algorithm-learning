@@ -8,7 +8,8 @@ public class TestMinHeap {
 	@Test
 	public void add() {
 		int cap = 5;
-		MinHeap h = new MinHeap(cap);
+		MinHeap h = new MinHeap(new int[]{4,3,2,1}, cap+5);
+		dumpHeap(h);
 		for(int i=0;i<cap;i++) {
 			h.add(cap-i);
 		}
@@ -17,8 +18,8 @@ public class TestMinHeap {
 	}
 	@Test
 	public void change() {
-		int cap = 10;
-		MinHeap h = new MinHeap(cap);
+		int cap = 20;
+		MinHeap h = new MinHeap(new int[]{4,3,2,1},cap+5);
 		for(int i=0;i<cap;i++) {
 			h.add(cap-i);
 		}
@@ -44,7 +45,7 @@ public class TestMinHeap {
 
 	void checkHeap(MinHeap h) {
 		for(int i = h.last; i > 0; i--) {
-			int pi = h.parentIndex(i);
+			int pi = MinHeap.parentIndex(i);
 			assertTrue(h.A[i] >= h.A[pi]);
 		}
 	}

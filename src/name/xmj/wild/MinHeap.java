@@ -1,13 +1,16 @@
 package name.xmj.wild;
 
+
 public class MinHeap {
 
 	final int [] A;
 	int last;
-	public MinHeap(int capacity) {
-		int size = capacity;
+	public MinHeap(int[] array, int capacity) {
+		int size = Math.max(capacity, array.length);
 		A = new int[size];
-		last = -1;
+		System.arraycopy(array, 0, A, 0, array.length);
+		last = array.length -1;
+		heapify();
 	}
 
 	public int getMin() {
@@ -27,19 +30,10 @@ public class MinHeap {
 		return v;
 	}
 
-	public void heapify(int index) {
-		if(index > 0) {
-			int newV = A[index];
-			int pi = parentIndex(index);
-			if( A[pi] > newV) {
-				A[index] = A[pi];
-				A[pi] = newV;
-				heapifyUp(pi);
-			} else {
-				heapifyDown(index);
-			}
-		} else {
-			heapifyDown(index);
+	public void heapify() {
+		int size = last +1;
+		for(int i = size/2 - 1; i >= 0; i--) {
+			heapifyDown(i);
 		}
 	}
 
@@ -56,50 +50,35 @@ public class MinHeap {
 	}
 
 	void heapifyDown(int index) {
-		if(index < last) {
-			final int newV = A[index];
-			int lci = leftChildIndex(index);
-			int rci = rightChildIndex(index);
-			if(lci > last) {
-				return;
-			}
-			if(rci > last) {
-				if(A[lci] < newV) {
-					A[index] = A[lci];
-					A[lci] = newV;
-					heapifyDown(lci);
-				}
-				return;
-			}
-
-			if( A[lci] < newV && A[rci] < newV ) {
-				if(A[lci] < A[rci]) {
-					A[index] = A[lci];
-					A[lci] = newV;
-					heapifyDown(lci);
-				} else {
-					A[index] = A[rci];
-					A[rci] = newV;
-					heapifyDown(rci);
-				}
-			} else if(A[lci] < newV) {
-				A[index] = A[lci];
-				A[lci] = newV;
-				heapifyDown(lci);
-			} else if(A[rci] < newV) {
-				A[index] = A[rci];
-				A[rci] = newV;
-				heapifyDown(rci);
-			}
+		int indexOfMin;
+		int left = leftChildIndex(index);
+		int right = rightChildIndex(index);
+		if(left <= last && A[left] < A[index]) {
+			indexOfMin = left;
+		} else {
+			indexOfMin = index;
+		}
+		if(right <= last && A[right] < A[indexOfMin]) {
+			indexOfMin = right;
+		}
+		if(indexOfMin != index) {
+			swap(A, indexOfMin, index);
+			heapifyDown(indexOfMin);
 		}
 	}
-	int parentIndex(int index) {
+
+	static int parentIndex(int index) {
 		return (index-1)>>1;
 	}
-	int leftChildIndex(int index){
+	static int leftChildIndex(int index){
 		return (index<<1) + 1;
 	}
-	int rightChildIndex(int index){
+	static int rightChildIndex(int index){
 		return (index<<1) + 2;
+	}
+	static void swap(int [] array, int i, int j) {
+		int t = array[i];
+		array[i] = array[j];
+		array[j] = t;
 	}
 }
