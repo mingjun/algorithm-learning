@@ -3,16 +3,29 @@ package name.xmj.g;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+/**
+ *
+	a 32-bit integer could be splited into 32 small integers as:
+	1. bit 0~4
+	2. bit 1~5
+	...
+	31. bit 30~31 and bit 0~2
+	32. bit 31 and bit 0~3
+	please find a 32-bit integer that could be splited into exactly 0~31 (the order doesn't matter).
 
+	http://www.careercup.com/question?id=5361917182869504
+ * @author mingjun
+ *
+ */
 public class NumberHamilton {
 	static final int size = 32;
 	Node [] nodes;
 	public NumberHamilton() {
-		
+
 	}
 	public void init() {
 		nodes = new Node[size];
-		for(int i=0;i<size;i++){ 
+		for(int i=0;i<size;i++){
 			nodes[i] = new Node(i);
 		}
 	}
@@ -23,7 +36,7 @@ public class NumberHamilton {
 			int next1 = getNext1(v);
 			if(next1 < size) {
 				n.next1 = nodes[next1];
-				
+
 				int next2 = next1 | 0x0001;
 				if(next2 < size) {
 					n.next2 = nodes[next2];
@@ -31,7 +44,7 @@ public class NumberHamilton {
 			}
 		}
 	}
-	
+
 	public void findPath() {
 		try {
 			for(int i=0;i<size;i++){
@@ -43,7 +56,7 @@ public class NumberHamilton {
 			dump(e.seq);
 		}
 	}
-	
+
 	String dump(int [] seq) {
 		System.out.println(Arrays.toString(seq));
 		StringBuilder sb = new StringBuilder();
@@ -66,7 +79,7 @@ public class NumberHamilton {
 		if(m1 >= size) {
 			throw new ResultFound(existPath.seq());
 		}
-		
+
 		if(n.next1 != null && !existPath.contains(n.next1)) {
 			existPath.add(n.next1);
 			m1 = findLongestPathLength(n.next1, existPath);
@@ -79,14 +92,14 @@ public class NumberHamilton {
 		}
 		return Math.max(m1, m2);
 	}
-	
-	static final int MASK=0x001E; 
+
+	static final int MASK=0x001E;
 	int getNext1(int v) {
 		return (v << 1) & MASK;
 	}
-	
-	
-	
+
+
+
 	static class Node {
 		int value;
 		Node next1, next2;
@@ -94,7 +107,7 @@ public class NumberHamilton {
 			value = v;
 		}
 	}
-	
+
 	static class Path {
 		private List<Node> order = new ArrayList<Node>(size);
 		private boolean [] bitMap = new boolean[size];
@@ -113,7 +126,7 @@ public class NumberHamilton {
 		int size() {
 			return order.size();
 		}
-		
+
 		int [] seq() {
 			int [] r = new int[size];
 			int i = 0;
@@ -122,7 +135,7 @@ public class NumberHamilton {
 			}
 			return r;
 		}
-		
+
 	}
 	static class ResultFound extends Exception{
 		private static final long serialVersionUID = -4377800315430838133L;
@@ -130,7 +143,7 @@ public class NumberHamilton {
 		ResultFound(int [] seq) {
 			this.seq = seq;
 		}
-		
+
 	}
 }
 
